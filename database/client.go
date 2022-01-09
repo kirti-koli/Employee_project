@@ -1,7 +1,7 @@
 package database
 
 import (
-	"Employee_Project/entity"
+	"Employee_project/entity"
 	"log"
 
 	"github.com/jinzhu/gorm"
