@@ -3,9 +3,10 @@ package main
 import (
 	"log"
 	"net/http"
-	"rest-go-demo/controllers"
-	"rest-go-demo/database"
-	"rest-go-demo/entity"
+
+	"Employee_project/controllers"
+	"Employee_project/database"
+	"Employee_project/entity"
 
 	"github.com/gorilla/mux"
 	_ "github.com/jinzhu/gorm/dialects/mysql" //Required for MySQL dialect
@@ -21,20 +22,21 @@ func main() {
 }
 
 func initaliseHandlers(router *mux.Router) {
-	router.HandleFunc("/create", controllers.CreatePerson).Methods("POST")
-	router.HandleFunc("/get", controllers.GetAllPerson).Methods("GET")
-	router.HandleFunc("/get/{id}", controllers.GetPersonByID).Methods("GET")
-	router.HandleFunc("/update/{id}", controllers.UpdatePersonByID).Methods("PUT")
-	router.HandleFunc("/delete/{id}", controllers.DeletPersonByID).Methods("DELETE")
+
+	router.HandleFunc("/createemployee", controllers.CreateEmployee).Methods("POST")
+	router.HandleFunc("/getemployees", controllers.GetAllEmployees).Methods("GET")
+	router.HandleFunc("/getemployeebyid/{id}", controllers.GetEmployeeByID).Methods("GET")
+	router.HandleFunc("/updateemployee/{id}", controllers.UpdateEmployeeByID).Methods("PUT")
+	router.HandleFunc("/deleteemployee/{id}", controllers.DeletEmployeeByID).Methods("DELETE")
 }
 
 func initDB() {
 	config :=
 		database.Config{
 			ServerName: "localhost:3306",
-			User:       "root",
-			Password:   "root",
-			DB:         "learning_demo",
+			User: "root",
+
+			DB: "test",
 		}
 
 	connectionString := database.GetConnectionString(config)
@@ -42,5 +44,5 @@ func initDB() {
 	if err != nil {
 		panic(err.Error())
 	}
-	database.Migrate(&entity.Person{})
+	database.Migrate(&entity.Employee{})
 }
