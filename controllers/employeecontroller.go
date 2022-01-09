@@ -4,65 +4,65 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
-	"Employee_Project/database"
-	"Employee_Project/entity"
 	"strconv"
+
+	"Employee_project/database"
+	"Employee_project/entity"
 
 	"github.com/gorilla/mux"
 )
 
-//GetAllPerson get all person data
-func GetAllPerson(w http.ResponseWriter, r *http.Request) {
-	var persons []entity.Person
-	database.Connector.Find(&persons)
+//GetAllEmployees get all employee data
+func GetAllEmployees(w http.ResponseWriter, r *http.Request) {
+	var employees []entity.Employee
+	database.Connector.Find(&employees)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(persons)
+	json.NewEncoder(w).Encode(employees)
 }
 
-//GetPersonByID returns person with specific ID
-func GetPersonByID(w http.ResponseWriter, r *http.Request) {
+//GetEmployeeByID returns employee with specific ID
+func GetEmployeeByID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["id"]
 
-	var person entity.Person
-	database.Connector.First(&person, key)
+	var employee entity.Employee
+	database.Connector.First(&employee, key)
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(person)
+	json.NewEncoder(w).Encode(employee)
 }
 
-//CreatePerson creates person
-func CreatePerson(w http.ResponseWriter, r *http.Request) {
+//CreateEmployee creates employee
+func CreateEmployee(w http.ResponseWriter, r *http.Request) {
 	requestBody, _ := ioutil.ReadAll(r.Body)
-	var person entity.Person
-	json.Unmarshal(requestBody, &person)
+	var employee entity.Employee
+	json.Unmarshal(requestBody, &employee)
 
-	database.Connector.Create(person)
+	database.Connector.Create(&employee)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(person)
+	json.NewEncoder(w).Encode(employee)
 }
 
-//UpdatePersonByID updates person with respective ID
-func UpdatePersonByID(w http.ResponseWriter, r *http.Request) {
+//UpdateEmployeeByID updates employee with respective ID
+func UpdateEmployeeByID(w http.ResponseWriter, r *http.Request) {
 	requestBody, _ := ioutil.ReadAll(r.Body)
-	var person entity.Person
-	json.Unmarshal(requestBody, &person)
-	database.Connector.Save(&person)
+	var employee entity.Employee
+	json.Unmarshal(requestBody, &employee)
+	database.Connector.Save(&employee)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(person)
+	json.NewEncoder(w).Encode(employee)
 }
 
-//DeletPersonByID delete's person with specific ID
-func DeletPersonByID(w http.ResponseWriter, r *http.Request) {
+//DeletEmployeeByID delete's employee with specific ID
+func DeletEmployeeByID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["id"]
 
-	var person entity.Person
+	var employee entity.Employee
 	id, _ := strconv.ParseInt(key, 10, 64)
-	database.Connector.Where("id = ?", id).Delete(&person)
+	database.Connector.Where("id = ?", id).Delete(&employee)
 	w.WriteHeader(http.StatusNoContent)
 }
-
