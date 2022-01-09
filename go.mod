@@ -1,4 +1,4 @@
-module rest-go-demo
+module Employee_project
 
 go 1.14
 
